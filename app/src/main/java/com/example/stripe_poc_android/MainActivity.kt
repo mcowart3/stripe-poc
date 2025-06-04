@@ -49,10 +49,11 @@ fun Checkout() {
     var paymentIntentClientSecret by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(context) {
-        "https://jazzy-valiant-rose.glitch.me/checkout".httpPost().responseJson { _, _, result ->
+        "http://10.0.2.2:3000/checkout".httpPost().responseJson { _, _, result ->
             Log.d("debug", result.toString())
             if (result is Result.Success) {
                 val responseJson = result.get().obj()
+                Log.d("debug", responseJson.toString())
                 paymentIntentClientSecret = responseJson.getString("paymentIntent")
                 customerConfig = PaymentSheet.CustomerConfiguration(
                     id = responseJson.getString("customer"),
@@ -93,7 +94,7 @@ private fun presentPaymentSheet(
     paymentSheet.presentWithPaymentIntent(
         paymentIntentClientSecret,
         PaymentSheet.Configuration(
-            merchantDisplayName = "My merchant name",
+            merchantDisplayName = "Marlo",
             customer = customerConfig,
             // Set `allowsDelayedPaymentMethods` to true if your business handles
             // delayed notification payment methods like US bank accounts.
